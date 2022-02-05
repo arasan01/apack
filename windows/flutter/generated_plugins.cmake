@@ -3,6 +3,10 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  bitsdojo_window_windows
+  flutter_acrylic
+  image_compression_flutter
+  system_theme
   url_launcher_windows
 )
 
