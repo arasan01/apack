@@ -3,12 +3,13 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HomeView extends HookConsumerWidget {
-  const HomeView({Key? key}) : super(key: key);
+class FormatConversionView extends HookConsumerWidget {
+  const FormatConversionView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ScaffoldPage(
-      header: const PageHeader(title: Text('Reduce the size of zipped images')),
+      header:
+          const PageHeader(title: Text('Format Conversion JPG, PNG, and WebP')),
       content: ListView(
         padding: EdgeInsets.only(
           bottom: kPageDefaultVerticalPadding,
