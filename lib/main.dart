@@ -1,15 +1,14 @@
 import 'package:apack/constants.dart';
-import 'package:apack/model/theme.dart';
+import 'package:apack/entity/theme.dart';
 import 'package:apack/providers.dart';
 import 'package:apack/view/about.dart';
 import 'package:apack/view/format_conversion.dart';
 import 'package:apack/view/home.dart';
 import 'package:apack/view/setting.dart';
+import 'package:apack/view/window.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -38,11 +37,6 @@ void main() async {
   } else {
     darkMode = true;
   }
-  if (!kIsWeb &&
-      [TargetPlatform.windows, TargetPlatform.linux]
-          .contains(defaultTargetPlatform)) {
-    await flutter_acrylic.Window.initialize();
-  }
 
   runApp(ProviderScope(child: ApackApp()));
 
@@ -61,13 +55,13 @@ void main() async {
 class ApackApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appTheme = ref.watch(appThemeProvider.state).state;
+    final appTheme = ref.watch(appThemeProvider);
     return FluentApp(
       debugShowCheckedModeBanner: false,
       title: appTitle,
       themeMode: appTheme.mode,
       theme: ThemeData(
-        accentColor: appTheme.color,
+        accentColor: systemAccentColor,
         brightness: appTheme.mode == ThemeMode.system
             ? darkMode
                 ? Brightness.dark
@@ -90,25 +84,40 @@ class NavSideView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(paneIndexProvider.state).state;
-    final remainCount = ref.watch(remainingItemCountProvider.state).state;
-    final appTheme = ref.watch(appThemeProvider.state).state;
 
     return NavigationView(
+      appBar: NavigationAppBar(
+        title: () {
+          if (kIsWeb) return const Text(appTitle);
+          return MoveWindow(
+            child: const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(appTitle),
+            ),
+          );
+        }(),
+        actions: kIsWeb
+            ? null
+            : MoveWindow(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [Spacer(), WindowButtons()],
+                ),
+              ),
+      ),
       pane: NavigationPane(
         selected: selectedIndex,
         onChanged: (newIndex) {
           ref.read(paneIndexProvider.state).state = newIndex;
         },
         displayMode: PaneDisplayMode.auto,
+        header: const Text("Flutter for Windows"),
         items: [
           PaneItem(
-              icon: const Icon(FluentIcons.fabric_picture_library),
-              title: const Text("Reduce Size"),
-              infoBadge: remainCount > 0
-                  ? InfoBadge(
-                      source: Text('$selectedIndex'),
-                    )
-                  : null),
+            icon: const Icon(FluentIcons.fabric_picture_library),
+            title: const Text("Reduce Size"),
+            infoBadge: ref.watch(remainInfoBadgeProvider),
+          ),
           PaneItem(
             icon: const Icon(FluentIcons.edit_photo),
             title: const Text("Format Conversion"),
