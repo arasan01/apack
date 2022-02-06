@@ -53,7 +53,11 @@ class AboutView extends HookConsumerWidget {
           left: PageHeader.horizontalPadding(context),
           right: PageHeader.horizontalPadding(context),
         ),
-        children: [...sourceLaunchView, biggerSpacer, ...twitterLaunchView],
+        children: [
+          ...sourceLaunchView,
+          biggerSpacer,
+          ...twitterLaunchView,
+        ],
       ),
     );
   }

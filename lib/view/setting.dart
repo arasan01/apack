@@ -5,6 +5,7 @@ import 'package:apack/providers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image/image.dart' as img;
 
 class SettingView extends HookConsumerWidget {
   const SettingView({Key? key}) : super(key: key);
@@ -36,6 +37,8 @@ class SettingView extends HookConsumerWidget {
     final imageCompressionListView = [
       Text('Compression image options',
           style: FluentTheme.of(context).typography.subtitle),
+      Text('Affects A and B.',
+          style: FluentTheme.of(context).typography.bodyStrong),
       spacer,
       Row(
         children: [
@@ -109,7 +112,7 @@ class SettingView extends HookConsumerWidget {
                 if (text.isEmpty) return 'Required';
                 final int? quality = int.tryParse(text);
                 if (quality == null) return 'Only number';
-                if (quality < 0 || quality > 100) return 'Quality 0-100';
+                if (quality < 0 || quality > 100) return 'Quality 1-100';
                 return null;
               },
               textInputAction: TextInputAction.next,

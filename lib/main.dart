@@ -134,11 +134,11 @@ class NavSideView extends HookConsumerWidget {
       ),
       content: NavigationBody(
         index: selectedIndex,
-        children: const [
-          HomeView(),
+        children: [
+          const HomeView(),
           FormatConversionView(),
-          SettingView(),
-          AboutView(),
+          const SettingView(),
+          const AboutView(),
         ],
       ),
     );
