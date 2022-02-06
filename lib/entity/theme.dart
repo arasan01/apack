@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
+import 'package:state_notifier/state_notifier.dart';
 import 'package:system_theme/system_theme.dart';
-import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'theme.freezed.dart';
@@ -9,9 +9,18 @@ part 'theme.freezed.dart';
 @freezed
 class AppTheme with _$AppTheme {
   factory AppTheme({
-    AccentColor? color,
     @Default(ThemeMode.system) ThemeMode mode,
   }) = _AppTheme;
+}
+
+class AppThemeNotifier extends StateNotifier<AppTheme> {
+  AppThemeNotifier() : super(AppTheme());
+
+  void update({ThemeMode? mode}) {
+    state = state.copyWith(
+      mode: mode ?? state.mode,
+    );
+  }
 }
 
 AccentColor get systemAccentColor {
