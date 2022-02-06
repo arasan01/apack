@@ -9,6 +9,42 @@ class AboutView extends HookConsumerWidget {
   const AboutView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    List<Widget> sourceLaunchView = [
+      Text('Source Code', style: FluentTheme.of(context).typography.subtitle),
+      spacer,
+      Button(
+        onPressed: () {
+          url_launcher.launch(githubRepositoryUrl);
+        },
+        child: Row(
+          children: [
+            const Icon(FluentIcons.open_source),
+            spacer,
+            Text('GitHub Repository',
+                style: FluentTheme.of(context).typography.bodyStrong),
+          ],
+        ),
+      )
+    ];
+
+    List<Widget> twitterLaunchView = [
+      Text('Twitter', style: FluentTheme.of(context).typography.subtitle),
+      spacer,
+      Button(
+        onPressed: () {
+          url_launcher.launch(twitterUrl);
+        },
+        child: Row(
+          children: [
+            const Icon(FluentIcons.user_followed),
+            spacer,
+            Text('Author Twitter @arasan01_me',
+                style: FluentTheme.of(context).typography.bodyStrong),
+          ],
+        ),
+      )
+    ];
+
     return ScaffoldPage(
       header: const PageHeader(title: Text('About')),
       content: ListView(
@@ -17,11 +53,7 @@ class AboutView extends HookConsumerWidget {
           left: PageHeader.horizontalPadding(context),
           right: PageHeader.horizontalPadding(context),
         ),
-        children: [
-          Text('Select archive',
-              style: FluentTheme.of(context).typography.subtitle),
-          spacer,
-        ],
+        children: [...sourceLaunchView, biggerSpacer, ...twitterLaunchView],
       ),
     );
   }
