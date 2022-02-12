@@ -1,7 +1,5 @@
 import 'package:apack/constants.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
@@ -38,7 +36,7 @@ class AboutView extends HookConsumerWidget {
           children: [
             const Icon(FluentIcons.user_followed),
             spacer,
-            Text('Author Twitter @arasan01_me',
+            Text('Author Twitter @arasan01_dev',
                 style: FluentTheme.of(context).typography.bodyStrong),
           ],
         ),

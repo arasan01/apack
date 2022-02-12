@@ -1,15 +1,18 @@
 import 'package:apack/constants.dart';
+import 'package:apack/define/pair.dart';
 import 'package:apack/entity/theme.dart';
-import 'package:apack/providers.dart';
+import 'package:apack/providers/global.dart';
+import 'package:apack/variables.dart';
 import 'package:apack/view/about.dart';
 import 'package:apack/view/format_conversion.dart';
-import 'package:apack/view/home.dart';
+import 'package:apack/view/reduce_size.dart';
 import 'package:apack/view/setting.dart';
 import 'package:apack/view/window.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -21,8 +24,6 @@ bool get isDesktop {
     TargetPlatform.macOS,
   ].contains(defaultTargetPlatform);
 }
-
-late bool darkMode;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +38,8 @@ void main() async {
   } else {
     darkMode = true;
   }
+
+  prefs = await SharedPreferences.getInstance();
 
   runApp(ProviderScope(child: ApackApp()));
 
@@ -80,9 +83,41 @@ class ApackApp extends HookConsumerWidget {
   }
 }
 
+typedef NatigationPaneMatch = List<Pair<NavigationPaneItem, Widget>>;
+
 class NavSideView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    NatigationPaneMatch paneMatch = [
+      Pair(
+        PaneItem(
+          icon: const Icon(FluentIcons.fabric_picture_library),
+          title: const Text("Reduce Size"),
+          infoBadge: ref.watch(remainInfoBadgeProvider),
+        ),
+        const ReduceSizeView(),
+      ),
+      Pair(
+        PaneItem(
+          icon: const Icon(FluentIcons.edit_photo),
+          title: const Text("Format Conversion"),
+        ),
+        const FormatConversionView(),
+      ),
+      Pair(
+          PaneItem(
+            icon: const Icon(FluentIcons.settings),
+            title: const Text("Setting"),
+          ),
+          const SettingView()),
+      Pair(
+        PaneItem(
+          icon: const Icon(FluentIcons.info),
+          title: const Text("About"),
+        ),
+        const AboutView(),
+      ),
+    ];
     final selectedIndex = ref.watch(paneIndexProvider.state).state;
 
     return NavigationView(
@@ -111,35 +146,15 @@ class NavSideView extends HookConsumerWidget {
           ref.read(paneIndexProvider.state).state = newIndex;
         },
         displayMode: PaneDisplayMode.auto,
-        header: const Text("Flutter for Windows"),
-        items: [
-          PaneItem(
-            icon: const Icon(FluentIcons.fabric_picture_library),
-            title: const Text("Reduce Size"),
-            infoBadge: ref.watch(remainInfoBadgeProvider),
-          ),
-          PaneItem(
-            icon: const Icon(FluentIcons.edit_photo),
-            title: const Text("Format Conversion"),
-          ),
-          PaneItem(
-            icon: const Icon(FluentIcons.settings),
-            title: const Text("Setting"),
-          ),
-          PaneItem(
-            icon: const Icon(FluentIcons.info),
-            title: const Text("About"),
-          )
-        ],
+        header: const Padding(
+          padding: EdgeInsets.only(left: 32),
+          child: Text("Flutter for Windows"),
+        ),
+        items: paneMatch.map((p) => p.left).toList(),
       ),
       content: NavigationBody(
         index: selectedIndex,
-        children: [
-          const HomeView(),
-          FormatConversionView(),
-          const SettingView(),
-          const AboutView(),
-        ],
+        children: paneMatch.map((p) => p.right).toList(),
       ),
     );
   }

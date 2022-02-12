@@ -1,21 +1,27 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:image_compression_flutter/image_compression_flutter.dart';
-import 'package:state_notifier/state_notifier.dart';
+import 'dart:math';
+import 'dart:typed_data';
 
-part 'process_image.freezed.dart';
+class ProcessImage {
+  final Uint8List image;
+  final String suggestedFileName;
+  final String mimeType;
+  final String extension;
 
-@freezed
-class ProcessImage with _$ProcessImage {
-  const factory ProcessImage({
-    required XFile image,
-    required String suggestedFileName,
-    required String mimeType,
-    required String extension,
-  }) = _ProcessImage;
+  ProcessImage({
+    required this.image,
+    required this.suggestedFileName,
+    required this.mimeType,
+    required this.extension,
+  });
 }
 
-class ProcessImageNotifier extends StateNotifier<ProcessImage?> {
-  ProcessImageNotifier() : super(null);
-
-  void update(ProcessImage? value) => state = value;
+extension View on ProcessImage {
+  String get fileSize {
+    final bytes = image.lengthInBytes;
+    const suffixes = ["B", "KB", "MB", "GB", "TB"];
+    var order = (log(bytes) / log(1024)).floor();
+    return ((bytes / pow(1024, order)).toStringAsFixed(1)) +
+        ' ' +
+        suffixes[order];
+  }
 }

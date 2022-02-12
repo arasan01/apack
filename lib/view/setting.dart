@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:apack/constants.dart';
-import 'package:apack/providers.dart';
+import 'package:apack/providers/compression_option.dart';
+import 'package:apack/providers/global.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:image/image.dart' as img;
 
 class SettingView extends HookConsumerWidget {
   const SettingView({Key? key}) : super(key: key);
@@ -37,7 +35,7 @@ class SettingView extends HookConsumerWidget {
     final imageCompressionListView = [
       Text('Compression image options',
           style: FluentTheme.of(context).typography.subtitle),
-      Text('Affects A and B.',
+      Text('Affects reduce size process and format conversion.',
           style: FluentTheme.of(context).typography.bodyStrong),
       spacer,
       Row(
@@ -133,7 +131,7 @@ class SettingView extends HookConsumerWidget {
             ref.read(remainItemCountProvider.state).state++;
           }
         },
-        child: Text("update remain"),
+        child: const Text("update remain"),
       ),
     ];
 

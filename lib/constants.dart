@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 
 const githubRepositoryUrl = 'https://github.com/arasan01/apack';
-const twitterUrl = 'https://twitter.com/arasan01_me';
+const twitterUrl = 'https://twitter.com/arasan01_dev';
 
-const TextStyle headerTextStyle = TextStyle(fontSize: 28);
 const String appTitle = 'Apack';
 const Widget spacer = SizedBox(
   height: 10.0,

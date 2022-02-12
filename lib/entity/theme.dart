@@ -1,3 +1,4 @@
+import 'package:apack/variables.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:state_notifier/state_notifier.dart';
@@ -20,6 +21,11 @@ class AppThemeNotifier extends StateNotifier<AppTheme> {
     state = state.copyWith(
       mode: mode ?? state.mode,
     );
+    store();
+  }
+
+  void store() {
+    prefs.setString('themeMode', state.mode.name);
   }
 }
 
@@ -38,4 +44,11 @@ AccentColor get systemAccentColor {
     });
   }
   return Colors.blue;
+}
+
+extension ThemeModeExt on String {
+  ThemeMode toThemeMode() {
+    return ThemeMode.values.firstWhere((type) => type.name == this,
+        orElse: () => ThemeMode.system);
+  }
 }
