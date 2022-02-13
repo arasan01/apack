@@ -31,6 +31,10 @@ bridge::DragDropBridge::~DragDropBridge() {
 
 void bridge::DragDropBridge::MessageHandler(HWND window, UINT const message, WPARAM const wparam, LPARAM const lparam) noexcept {
     switch (message) {
+      case WM_CREATE: {
+        DragAcceptFiles(window, true);
+        return;
+      }
       case WM_DROPFILES: {
         HDROP hdrop = reinterpret_cast<HDROP>(wparam);
         UINT file_count = DragQueryFileW(hdrop, 0xFFFFFFFF, nullptr, 0);
