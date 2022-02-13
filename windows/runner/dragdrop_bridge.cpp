@@ -47,8 +47,8 @@ void bridge::DragDropBridge::MessageHandler(HWND window, UINT const message, WPA
                 ::WideCharToMultiByte(CP_UTF8, 0, wS.c_str(), -1, cpBufUTF8, iBufferSize, NULL, NULL);
                 std::string s(cpBufUTF8, cpBufUTF8 + iBufferSize - 1);
                 delete[] cpBufUTF8;
-                flutter::EncodableValue file(s);
-                files.push_back(s);
+                flutter::EncodableValue file(std::move(s));
+                files.push_back(file);
             }
         }
         DragFinish(hdrop);
