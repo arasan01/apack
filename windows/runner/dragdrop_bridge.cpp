@@ -4,10 +4,12 @@
 #include <flutter/event_stream_handler.h>
 #include <flutter/event_stream_handler_functions.h>
 
+auto const kDragDropChannel = "dnd_channel";
+
 bridge::DragDropBridge::DragDropBridge(flutter::FlutterEngine* flutter_instance)
     : flutter_instance_(flutter_instance),
       messenger_(flutter_instance->messenger()),
-      name_("dnd_channel") {
+      name_(kDragDropChannel) {
         event_channel_ = std::make_unique<flutter::EventChannel<flutter::EncodableValue>>(
             messenger_, name_, &flutter::StandardMethodCodec::GetInstance());
         auto handler = std::make_unique<flutter::StreamHandlerFunctions<flutter::EncodableValue>>(
@@ -45,10 +47,9 @@ void bridge::DragDropBridge::MessageHandler(HWND window, UINT const message, WPA
         for (UINT i = 0; i < file_count; ++i) {
             wchar_t filename[MAX_PATH];
             if (DragQueryFileW(hdrop, i, filename, MAX_PATH)) {
-                std::wstring wS = filename;
-                int iBufferSize = ::WideCharToMultiByte(CP_UTF8, 0, wS.c_str(), -1, NULL, 0, NULL, NULL);
+                int iBufferSize = ::WideCharToMultiByte(CP_UTF8, 0, filename, -1, NULL, 0, NULL, NULL);
                 char* cpBufUTF8 = new char[iBufferSize];
-                ::WideCharToMultiByte(CP_UTF8, 0, wS.c_str(), -1, cpBufUTF8, iBufferSize, NULL, NULL);
+                ::WideCharToMultiByte(CP_UTF8, 0, filename, -1, cpBufUTF8, iBufferSize, NULL, NULL);
                 std::string s(cpBufUTF8, cpBufUTF8 + iBufferSize - 1);
                 delete[] cpBufUTF8;
                 flutter::EncodableValue file(std::move(s));
