@@ -49,7 +49,7 @@ void main() async {
       win.minSize = const Size(410, 540);
       win.size = const Size(755, 545);
       win.alignment = Alignment.center;
-      win.title = appTitle;
+      win.title = kAppTitle;
       win.show();
     });
   }
@@ -61,7 +61,7 @@ class ApackApp extends HookConsumerWidget {
     final appTheme = ref.watch(appThemeProvider);
     return FluentApp(
       debugShowCheckedModeBanner: false,
-      title: appTitle,
+      title: kAppTitle,
       themeMode: appTheme.mode,
       theme: ThemeData(
         accentColor: systemAccentColor,
@@ -123,11 +123,11 @@ class NavSideView extends HookConsumerWidget {
     return NavigationView(
       appBar: NavigationAppBar(
         title: () {
-          if (kIsWeb) return const Text(appTitle);
+          if (kIsWeb) return const Text(kAppTitle);
           return MoveWindow(
             child: const Align(
               alignment: Alignment.centerLeft,
-              child: Text(appTitle),
+              child: Text(kAppTitle),
             ),
           );
         }(),

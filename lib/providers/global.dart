@@ -21,3 +21,6 @@ final remainInfoBadgeProvider = Provider<InfoBadge?>((ref) {
 final appThemeProvider = StateNotifierProvider<AppThemeNotifier, AppTheme>(
     (_) => AppThemeNotifier()
       ..update(mode: prefs.getString('themeMode')?.toThemeMode()));
+
+// Debug provider
+final dragDropPlatformMessageProvider = StateProvider<List<String>>((_) => []);

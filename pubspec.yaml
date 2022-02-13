@@ -35,8 +35,7 @@ dev_dependencies:
   freezed:
 
 flutter:
-  uses-material-design: false
-  # generate: true
+  uses-material-design: true
 
 msix_config:
   display_name: apack

@@ -1,5 +1,4 @@
 import 'package:apack/constants.dart';
-import 'package:apack/drag_and_drop_channel.dart';
 import 'package:apack/providers/compression_option.dart';
 import 'package:apack/providers/global.dart';
 import 'package:fluent_ui/fluent_ui.dart';

@@ -12,7 +12,7 @@ class AboutView extends HookConsumerWidget {
       spacer,
       Button(
         onPressed: () {
-          url_launcher.launch(githubRepositoryUrl);
+          url_launcher.launch(kGithubRepositoryUrl);
         },
         child: Row(
           children: [
@@ -30,7 +30,7 @@ class AboutView extends HookConsumerWidget {
       spacer,
       Button(
         onPressed: () {
-          url_launcher.launch(twitterUrl);
+          url_launcher.launch(kTwitterUrl);
         },
         child: Row(
           children: [

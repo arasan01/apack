@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:apack/constants.dart';
 import 'package:apack/define/format_conversion.dart';
 import 'package:apack/drag_and_drop_channel.dart';
@@ -5,13 +7,12 @@ import 'package:apack/entity/process_image.dart';
 import 'package:apack/define/image_output_type.dart';
 import 'package:apack/logic/image.dart';
 import 'package:apack/providers/compression_option.dart';
+import 'package:apack/providers/global.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path/path.dart' as path;
-
-typedef ProcessImageEffect = void Function(WidgetRef ref, ProcessImage image);
 
 final _sliderValueProvider = StateProvider<double>(
     (ref) => ref.read(compressionImageOptionProvider).quality.toDouble());
@@ -47,10 +48,15 @@ class FormatConversionView extends HookConsumerWidget {
         (data) {
           List<String> list = List<String>.from(data);
           ref.read(dragDropPlatformMessageProvider.state).state = list;
-          final ext = path.extension(list.first);
-          ref.read(_filePathProvider.state).state = XFile(list.first);
+          final ext =
+              path.extension(list.first).toLowerCase().replaceFirst('.', '');
+          if (allowSelectImageFormat.contains(ext)) {
+            ref.read(_filePathProvider.state).state = XFile(list.first);
+          }
         },
-        onError: (_) {},
+        onError: (error) {
+          stderr.writeln('error $error');
+        },
         cancelOnError: false,
       );
 
@@ -59,6 +65,7 @@ class FormatConversionView extends HookConsumerWidget {
         eventSubscription = null;
       };
     }, []);
+
     return ScaffoldPage(
       header: const PageHeader(
           title:
