@@ -1,4 +1,5 @@
 import 'package:apack/constants.dart';
+import 'package:apack/drag_and_drop_channel.dart';
 import 'package:apack/providers/compression_option.dart';
 import 'package:apack/providers/global.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -135,6 +136,18 @@ class SettingView extends HookConsumerWidget {
       ),
     ];
 
+    final dragDropDebugView = [
+      Text('DragDrop Debug',
+          style: FluentTheme.of(context).typography.subtitle),
+      spacer,
+      Text(ref
+          .watch(dragDropPlatformMessageProvider.state)
+          .state
+          .map((e) => e)
+          .toList()
+          .join(', ')),
+    ];
+
     return ScaffoldPage(
       header: const PageHeader(title: Text('Settings')),
       content: ListView(
@@ -149,6 +162,8 @@ class SettingView extends HookConsumerWidget {
           ...themeModeListView,
           biggerSpacer,
           ...remainDebugView,
+          biggerSpacer,
+          ...dragDropDebugView,
         ],
       ),
     );

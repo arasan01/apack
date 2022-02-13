@@ -1,11 +1,13 @@
 import 'package:apack/constants.dart';
 import 'package:apack/define/format_conversion.dart';
+import 'package:apack/drag_and_drop_channel.dart';
 import 'package:apack/entity/process_image.dart';
 import 'package:apack/define/image_output_type.dart';
 import 'package:apack/logic/image.dart';
 import 'package:apack/providers/compression_option.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 typedef ProcessImageEffect = void Function(WidgetRef ref, ProcessImage image);
@@ -39,6 +41,21 @@ class FormatConversionView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(() {
+      eventSubscription = eventChannel.receiveBroadcastStream().listen(
+        (data) {
+          List<String> list = List<String>.from(data);
+          ref.read(dragDropPlatformMessageProvider.state).state = list;
+        },
+        onError: (_) {},
+        cancelOnError: false,
+      );
+
+      return () {
+        eventSubscription?.cancel();
+        eventSubscription = null;
+      };
+    }, []);
     return ScaffoldPage(
       header: const PageHeader(
           title:
