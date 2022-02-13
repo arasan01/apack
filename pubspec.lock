@@ -28,7 +28,7 @@ packages:
       name: archive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.11"
+    version: "3.2.0"
   args:
     dependency: transitive
     description:
@@ -246,20 +246,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.3"
-  file_selector_linux:
-    dependency: "direct main"
-    description:
-      name: file_selector_linux
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.2+1"
-  file_selector_macos:
-    dependency: "direct main"
-    description:
-      name: file_selector_macos
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.4+1"
   file_selector_platform_interface:
     dependency: transitive
     description:
@@ -294,7 +280,7 @@ packages:
       name: fluent_ui
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.8.0"
+    version: "3.9.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -306,14 +292,7 @@ packages:
       name: flutter_hooks
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.18.2"
-  flutter_image_compress:
-    dependency: transitive
-    description:
-      name: flutter_image_compress
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
+    version: "0.18.2+1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -393,7 +372,7 @@ packages:
       name: http_multi_server
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "3.2.0"
   http_parser:
     dependency: transitive
     description:
@@ -408,20 +387,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.1"
-  image_compression:
-    dependency: transitive
-    description:
-      name: image_compression
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
-  image_compression_flutter:
-    dependency: "direct main"
-    description:
-      name: image_compression_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
   intl:
     dependency: transitive
     description:
@@ -498,7 +463,7 @@ packages:
       name: msix
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.8.13"
+    version: "2.8.18"
   package_config:
     dependency: transitive
     description:
@@ -776,35 +741,35 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.18"
+    version: "6.0.20"
   url_launcher_android:
     dependency: transitive
     description:
       name: url_launcher_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.14"
+    version: "6.0.15"
   url_launcher_ios:
     dependency: transitive
     description:
       name: url_launcher_ios
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.14"
+    version: "6.0.15"
   url_launcher_linux:
     dependency: transitive
     description:
       name: url_launcher_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.0"
   url_launcher_macos:
     dependency: transitive
     description:
       name: url_launcher_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.0"
   url_launcher_platform_interface:
     dependency: transitive
     description:
@@ -825,7 +790,7 @@ packages:
       name: url_launcher_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "3.0.0"
   url_strategy:
     dependency: "direct main"
     description:
@@ -860,7 +825,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.10"
+    version: "2.3.11"
   xdg_directories:
     dependency: transitive
     description:

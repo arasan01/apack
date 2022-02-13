@@ -9,6 +9,7 @@ import 'package:file_selector/file_selector.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:path/path.dart' as path;
 
 typedef ProcessImageEffect = void Function(WidgetRef ref, ProcessImage image);
 
@@ -46,6 +47,8 @@ class FormatConversionView extends HookConsumerWidget {
         (data) {
           List<String> list = List<String>.from(data);
           ref.read(dragDropPlatformMessageProvider.state).state = list;
+          final ext = path.extension(list.first);
+          ref.read(_filePathProvider.state).state = XFile(list.first);
         },
         onError: (_) {},
         cancelOnError: false,

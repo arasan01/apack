@@ -81,10 +81,7 @@ Uint8List? _encodeOutputTypeImage(img.Image image, AppImageOutputType type,
   return bytes.isEmpty ? null : bytes;
 }
 
-Future<XFile?> selectImageFileWithOpenExplorer() async {
-  final XTypeGroup typeGroup = XTypeGroup(
-    label: 'images',
-    extensions: <String>[
+const allowSelectImageFormat = <String>[
       'jpg',
       'jpeg',
       'png',
@@ -99,6 +96,11 @@ Future<XFile?> selectImageFileWithOpenExplorer() async {
       'pvr',
       'pvrtc'
     ],
+
+Future<XFile?> selectImageFileWithOpenExplorer() async {
+  final XTypeGroup typeGroup = XTypeGroup(
+    label: 'images',
+    extensions: allowSelectImageFormat,
   );
   final XFile? file =
       await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
