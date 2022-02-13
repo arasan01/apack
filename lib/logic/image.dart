@@ -7,7 +7,7 @@ import 'package:apack/entity/process_image.dart';
 import 'package:apack/define/image_output_type.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:image/image.dart' as img;
+import 'package:image/image.dart';
 import 'package:path/path.dart';
 
 class _CompressParam {
@@ -36,16 +36,16 @@ Future _compressIsolate(_CompressParam param) async {
     return;
   }
 
-  img.Image? image = img.decodeImage(rawimageData);
+  Image? image = decodeImage(rawimageData);
   if (image == null) {
     param.sendPort.send(null);
     return;
   }
 
-  final img.Image compressedImage = image.width > image.height
-      ? img.copyResize(image,
+  final Image compressedImage = image.width > image.height
+      ? copyResize(image,
           width: param.maxWidth > image.width ? image.width : param.maxWidth)
-      : img.copyResize(image,
+      : copyResize(image,
           height:
               param.maxHeight > image.height ? image.height : param.maxHeight);
 
@@ -61,18 +61,18 @@ Future _compressIsolate(_CompressParam param) async {
   param.sendPort.send(bytes);
 }
 
-Uint8List? _encodeOutputTypeImage(img.Image image, AppImageOutputType type,
+Uint8List? _encodeOutputTypeImage(Image image, AppImageOutputType type,
     {int quality = 95}) {
   final List<int> imageData;
   switch (type) {
     case AppImageOutputType.jpg:
-      imageData = img.encodeJpg(image, quality: quality);
+      imageData = encodeJpg(image, quality: quality);
       break;
     case AppImageOutputType.png:
-      imageData = img.encodePng(image);
+      imageData = encodePng(image);
       break;
     case AppImageOutputType.gif:
-      imageData = img.encodeGif(image);
+      imageData = encodeGif(image);
       break;
     default:
       return null;
@@ -82,20 +82,20 @@ Uint8List? _encodeOutputTypeImage(img.Image image, AppImageOutputType type,
 }
 
 const allowSelectImageFormat = <String>[
-      'jpg',
-      'jpeg',
-      'png',
-      'webp',
-      'bmp',
-      'tiff',
-      'psd',
-      'ico',
-      'gif',
-      'exr',
-      'tga',
-      'pvr',
-      'pvrtc'
-    ],
+  'jpg',
+  'jpeg',
+  'png',
+  'webp',
+  'bmp',
+  'tiff',
+  'psd',
+  'ico',
+  'gif',
+  'exr',
+  'tga',
+  'pvr',
+  'pvrtc'
+];
 
 Future<XFile?> selectImageFileWithOpenExplorer() async {
   final XTypeGroup typeGroup = XTypeGroup(
