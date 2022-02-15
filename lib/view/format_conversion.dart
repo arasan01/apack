@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:apack/constants.dart';
 import 'package:apack/define/format_conversion.dart';
 import 'package:apack/drag_and_drop_channel.dart';
@@ -7,7 +5,6 @@ import 'package:apack/entity/process_image.dart';
 import 'package:apack/define/image_output_type.dart';
 import 'package:apack/logic/image.dart';
 import 'package:apack/providers/compression_option.dart';
-import 'package:apack/providers/global.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -24,8 +21,8 @@ final _inOutMethodProvider = Provider<FormatConversionInOut>((_) =>
     FormatConversionInOut(
         selectImageFileWithOpenExplorer, saveImageFileWithOpenExplorer));
 final _processImageProvider = FutureProvider<ProcessImage?>((ref) async {
-  final type = ref.watch(_outputTypeProvider.state).state;
-  final file = ref.watch(_filePathProvider.state).state;
+  final type = ref.watch(_outputTypeProvider);
+  final file = ref.watch(_filePathProvider);
   final imageOption = ref.watch(compressionImageOptionProvider);
   if (file == null) return null;
   final image = await compressImage(
@@ -44,25 +41,18 @@ class FormatConversionView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
-      eventSubscription = eventChannel.receiveBroadcastStream().listen(
-        (data) {
-          List<String> list = List<String>.from(data);
-          ref.read(dragDropPlatformMessageProvider.state).state = list;
-          final ext =
-              path.extension(list.first).toLowerCase().replaceFirst('.', '');
-          if (allowSelectImageFormat.contains(ext)) {
-            ref.read(_filePathProvider.state).state = XFile(list.first);
-          }
-        },
-        onError: (error) {
-          stderr.writeln('error $error');
-        },
-        cancelOnError: false,
-      );
+      eventSubscriptions[kDragFormatConvertionEvent] =
+          dragEventStream.listen((list) {
+        final ext =
+            path.extension(list.first).toLowerCase().replaceFirst('.', '');
+        if (allowSelectImageFormat.contains(ext)) {
+          ref.read(_filePathProvider.notifier).state = XFile(list.first);
+        }
+      });
 
       return () {
-        eventSubscription?.cancel();
-        eventSubscription = null;
+        eventSubscriptions[kDragFormatConvertionEvent]?.cancel();
+        eventSubscriptions.remove(kDragFormatConvertionEvent);
       };
     }, []);
 
@@ -79,8 +69,7 @@ class FormatConversionView extends HookConsumerWidget {
         children: [
           buttons(ref),
           spacer,
-          if (ref.watch(_outputTypeProvider.state).state ==
-              AppImageOutputType.jpg)
+          if (ref.watch(_outputTypeProvider) == AppImageOutputType.jpg)
             jpegSlider(context, ref),
           spacer,
           const ImageDisplay()
@@ -97,9 +86,9 @@ class FormatConversionView extends HookConsumerWidget {
         spacer,
         Expanded(
           child: Slider(
-            value: ref.watch(_sliderValueProvider.state).state,
+            value: ref.watch(_sliderValueProvider),
             onChanged: (value) {
-              ref.read(_sliderValueProvider.state).state = value;
+              ref.read(_sliderValueProvider.notifier).state = value;
             },
             onChangeEnd: (value) {
               ref
@@ -112,7 +101,7 @@ class FormatConversionView extends HookConsumerWidget {
           ),
         ),
         spacer,
-        Text(ref.watch(_sliderValueProvider.state).state.toStringAsFixed(0),
+        Text(ref.watch(_sliderValueProvider).toStringAsFixed(0),
             style: FluentTheme.of(context).typography.bodyStrong),
       ],
     );
@@ -163,7 +152,7 @@ class FormatConversionView extends HookConsumerWidget {
     return SizedBox(
       width: 100,
       child: Combobox<AppImageOutputType>(
-        value: ref.watch(_outputTypeProvider.state).state,
+        value: ref.watch(_outputTypeProvider),
         items: AppImageOutputType.values
             .map((e) => ComboboxItem<AppImageOutputType>(
                   value: e,
@@ -172,7 +161,7 @@ class FormatConversionView extends HookConsumerWidget {
             .toList(),
         onChanged: (value) async {
           if (value != null) {
-            ref.read(_outputTypeProvider.state).state = value;
+            ref.read(_outputTypeProvider.notifier).state = value;
           }
         },
       ),
@@ -191,7 +180,7 @@ class FormatConversionView extends HookConsumerWidget {
         onPressed: () {
           ref.read(_inOutMethodProvider).input().then((value) {
             if (value != null) {
-              ref.read(_filePathProvider.state).state = value;
+              ref.read(_filePathProvider.notifier).state = value;
             }
           });
         });

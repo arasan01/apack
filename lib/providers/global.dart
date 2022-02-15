@@ -9,7 +9,7 @@ final paneIndexProvider = StateProvider<int>((ref) => 0);
 // NavigationPane add badge counter
 final remainItemCountProvider = StateProvider<int>((ref) => 0);
 final remainInfoBadgeProvider = Provider<InfoBadge?>((ref) {
-  final state = ref.watch(remainItemCountProvider.state).state;
+  final state = ref.watch(remainItemCountProvider);
   return state > 0
       ? InfoBadge(
           source: Text('$state'),
@@ -21,6 +21,3 @@ final remainInfoBadgeProvider = Provider<InfoBadge?>((ref) {
 final appThemeProvider = StateNotifierProvider<AppThemeNotifier, AppTheme>(
     (_) => AppThemeNotifier()
       ..update(mode: prefs.getString('themeMode')?.toThemeMode()));
-
-// Debug provider
-final dragDropPlatformMessageProvider = StateProvider<List<String>>((_) => []);

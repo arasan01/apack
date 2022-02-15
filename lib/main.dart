@@ -118,7 +118,7 @@ class NavSideView extends HookConsumerWidget {
         const AboutView(),
       ),
     ];
-    final selectedIndex = ref.watch(paneIndexProvider.state).state;
+    final selectedIndex = ref.watch(paneIndexProvider);
 
     return NavigationView(
       appBar: NavigationAppBar(
@@ -143,9 +143,9 @@ class NavSideView extends HookConsumerWidget {
       pane: NavigationPane(
         selected: selectedIndex,
         onChanged: (newIndex) {
-          ref.read(paneIndexProvider.state).state = newIndex;
+          ref.read(paneIndexProvider.notifier).state = newIndex;
         },
-        displayMode: PaneDisplayMode.auto,
+        displayMode: PaneDisplayMode.compact,
         header: const Padding(
           padding: EdgeInsets.only(left: 32),
           child: Text("Flutter for Windows"),

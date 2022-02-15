@@ -2,7 +2,6 @@ import 'package:apack/constants.dart';
 import 'package:apack/providers/compression_option.dart';
 import 'package:apack/providers/global.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SettingView extends HookConsumerWidget {
@@ -120,33 +119,6 @@ class SettingView extends HookConsumerWidget {
       ),
     ];
 
-    final remainDebugView = [
-      Text('Remain Debug', style: FluentTheme.of(context).typography.subtitle),
-      spacer,
-      ElevatedButton(
-        onPressed: () {
-          if (ref.read(remainItemCountProvider.state).state == 15) {
-            ref.read(remainItemCountProvider.state).state = 0;
-          } else {
-            ref.read(remainItemCountProvider.state).state++;
-          }
-        },
-        child: const Text("update remain"),
-      ),
-    ];
-
-    final dragDropDebugView = [
-      Text('DragDrop Debug',
-          style: FluentTheme.of(context).typography.subtitle),
-      spacer,
-      Text(ref
-          .watch(dragDropPlatformMessageProvider.state)
-          .state
-          .map((e) => e)
-          .toList()
-          .join(', ')),
-    ];
-
     return ScaffoldPage(
       header: const PageHeader(title: Text('Settings')),
       content: ListView(
@@ -159,10 +131,6 @@ class SettingView extends HookConsumerWidget {
           ...imageCompressionListView,
           biggerSpacer,
           ...themeModeListView,
-          biggerSpacer,
-          ...remainDebugView,
-          biggerSpacer,
-          ...dragDropDebugView,
         ],
       ),
     );
