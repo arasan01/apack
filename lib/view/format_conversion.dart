@@ -1,5 +1,6 @@
 import 'package:apack/constants.dart';
 import 'package:apack/define/format_conversion.dart';
+import 'package:apack/define/riverpod_debounce.dart';
 import 'package:apack/drag_and_drop_channel.dart';
 import 'package:apack/entity/process_image.dart';
 import 'package:apack/define/image_output_type.dart';
@@ -20,10 +21,16 @@ final _outputTypeProvider =
 final _inOutMethodProvider = Provider<FormatConversionInOut>((_) =>
     FormatConversionInOut(
         selectImageFileWithOpenExplorer, saveImageFileWithOpenExplorer));
-final _processImageProvider = FutureProvider<ProcessImage?>((ref) async {
+final _processImageProvider =
+    FutureProvider.autoDispose<ProcessImage?>((ref) async {
   final type = ref.watch(_outputTypeProvider);
   final file = ref.watch(_filePathProvider);
   final imageOption = ref.watch(compressionImageOptionProvider);
+  try {
+    await ref.debounce(const Duration(milliseconds: 200));
+  } on StateError {
+    return null;
+  }
   if (file == null) return null;
   final image = await compressImage(
     file: file,
