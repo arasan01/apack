@@ -33,8 +33,8 @@ void main() async {
   if (defaultTargetPlatform == TargetPlatform.windows ||
       defaultTargetPlatform == TargetPlatform.android ||
       kIsWeb) {
-    darkMode = await SystemTheme.darkMode;
-    await SystemTheme.accentInstance.load();
+    darkMode = SystemTheme.isDarkMode;
+    await SystemTheme.accentColor.load();
   } else {
     darkMode = true;
   }

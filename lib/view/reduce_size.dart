@@ -151,7 +151,9 @@ class ProcessTabView extends HookConsumerWidget {
   }
 }
 
-final _f1ScrollProvider = Provider<ScrollController>((_) => ScrollController());
+// final _f1ScrollProvider =
+//     Provider.autoDispose<ScrollController>((_) => ScrollController());
+final _f1Scroll = ScrollController();
 
 class WaitZipTreeDisplay extends HookConsumerWidget {
   const WaitZipTreeDisplay({Key? key}) : super(key: key);
@@ -159,7 +161,7 @@ class WaitZipTreeDisplay extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
-      controller: ref.watch(_f1ScrollProvider),
+      controller: _f1Scroll,
       itemCount: 100,
       itemBuilder: ((context, index) {
         return Padding(
@@ -178,7 +180,8 @@ class WaitZipTreeDisplay extends HookConsumerWidget {
 }
 
 final _f2ScrollProvider =
-    StateProvider<ScrollController>((_) => ScrollController());
+    StateProvider.autoDispose<ScrollController>((_) => ScrollController());
+final _f2Scroll = ScrollController();
 
 class FileTreeDisplay extends HookConsumerWidget {
   const FileTreeDisplay({Key? key}) : super(key: key);
@@ -186,7 +189,7 @@ class FileTreeDisplay extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
-      controller: ref.watch(_f2ScrollProvider),
+      controller: _f2Scroll,
       itemCount: 100,
       itemBuilder: ((context, index) {
         return Padding(
