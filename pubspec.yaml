@@ -16,17 +16,26 @@ dependencies:
   flutter_hooks: ^0.18.2
   url_launcher: ^6.0.18
   archive: ^3.1.11
-  image_compression: ^1.0.3
+  url_strategy: ^0.2.0
+  bitsdojo_window: ^0.1.1+1
+  system_theme: ^2.0.0
+  state_notifier: ^0.7.2+1
+  freezed_annotation: ^1.1.0
+  file_selector: ^0.8.3
+  path: ^1.8.0
+  image: ^3.1.1
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
   msix: ^2.8.13
+  build_runner:
+  freezed:
 
 flutter:
   uses-material-design: true
-  generate: true
 
 msix_config:
   display_name: apack

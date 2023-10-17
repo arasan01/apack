@@ -8,6 +8,8 @@
 
 #include "win32_window.h"
 
+namespace bridge { class DragDropBridge; }
+
 // A window that does nothing but host a Flutter view.
 class FlutterWindow : public Win32Window {
  public:
@@ -25,6 +27,7 @@ class FlutterWindow : public Win32Window {
  private:
   // The project to run.
   flutter::DartProject project_;
+  std::unique_ptr<bridge::DragDropBridge> drag_drop_bridge_;
 
   // The Flutter instance hosted by this window.
   std::unique_ptr<flutter::FlutterViewController> flutter_controller_;
